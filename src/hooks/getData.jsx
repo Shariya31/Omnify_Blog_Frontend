@@ -36,7 +36,7 @@ const useFetch = (url, options = {}, dependencies=[]) => {
                 });
                 setData(response.data);
             } catch (error) {
-                setError(error.response.data.message);
+                setError(error?.response?.data?.message);
                 console.log(error)
             } finally {
                 setLoading(false);
