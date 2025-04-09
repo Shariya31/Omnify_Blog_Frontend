@@ -6,7 +6,7 @@ This is the frontend of the **Blog Web App**, built using **React**, **Redux**, 
 
 ## 🚀 Live Deployment
 
-🔗 [Visit the frontend here](https://your-vercel-app-url.vercel.app](https://omnify-blog-frontend.vercel.app)
+🔗 [Visit the frontend here]https://omnify-blog-frontend.vercel.app
 
 🔗 [API base URL](https://omnify-blog-backend.onrender.com)
 
