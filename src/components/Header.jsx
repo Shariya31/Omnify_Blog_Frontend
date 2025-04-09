@@ -46,7 +46,7 @@ const Header = () => {
                             className="relative before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-[2px] before:w-0 before:bg-gray-600 before:transition-all before:duration-300 hover:before:w-full"
                             to="/blogs"
                         >
-                            Blogs
+                            My Blogs
                         </Link>
                     )}
 
@@ -61,7 +61,7 @@ const Header = () => {
                         <div className="relative">
                             <p
                                 onClick={() => setDropdown((prev) => !prev)}
-                                className="cursor-pointer relative before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-[2px] before:w-0 before:bg-gray-600 before:transition-all before:duration-300 hover:before:w-full"
+                                className="cursor-pointer border-2 border-black rounded-full p-2 hover:scale-105 ease-in-out duration-300 text-red-400 bg-black"
                             >
                                 {name}
                             </p>
@@ -112,29 +112,12 @@ const Header = () => {
                     }`}
             >
                 <nav className="px-4 space-y-3 flex flex-col text-gray-700 font-medium">
-                    <Link
-                        to="/"
-                        onClick={toggleMenu}
-                        className="hover:underline"
-                    >
-                        Home
-                    </Link>
 
-                    {userData?.token && (
-                        <Link
-                            to="/blogs"
-                            onClick={toggleMenu}
-                            className="hover:underline"
-                        >
-                            Blogs
-                        </Link>
-                    )}
-
-                    {name ? (
+                {name ? (
                         <div>
                             <button
                                 onClick={() => setMobileDropdown((prev) => !prev)}
-                                className="text-left hover:underline"
+                                className="text-left cursor-pointer border-2 border-black rounded-full p-2 hover:scale-105 ease-in-out duration-300 text-red-400 bg-black"
                             >
                                 {name}
                             </button>
@@ -166,6 +149,24 @@ const Header = () => {
                     ) : (
                         <Link to="/login" onClick={toggleMenu} className="hover:underline">
                             Login
+                        </Link>
+                    )}
+
+                    <Link
+                        to="/"
+                        onClick={toggleMenu}
+                        className="hover:underline"
+                    >
+                        Home
+                    </Link>
+
+                    {userData?.token && (
+                        <Link
+                            to="/blogs"
+                            onClick={toggleMenu}
+                            className="hover:underline"
+                        >
+                            My Blogs
                         </Link>
                     )}
 

@@ -14,11 +14,10 @@ const MyBlogs = () => {
 
   const navigate = useNavigate();
 
-  // Debounce
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       setDebouncedSearchText(searchText);
-    }, 17000);
+    }, 15000);
 
     return () => clearTimeout(debounceTimer);
   }, [searchText]);
@@ -30,13 +29,33 @@ const MyBlogs = () => {
   };
 
   const { data, loading, error } = getData(
-    `${server}/api/blog/my-blogs?search=${submittedSearchText || debouncedSearchText}`,
+    `${server}/api/blog/my-blogs?search=${submittedSearchText || debouncedSearchText}&page=${page}`,
     {
       method: 'GET',
       token,
     },
     [refreshKey, page, submittedSearchText, debouncedSearchText]
   );
+
+  const handleDelete = async (blogId) => {
+    try {
+      const res = await fetch(`${server}/api/blog/${blogId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) throw new Error(result.message || 'Delete failed');
+
+      setRefreshKey(prev => prev + 1); 
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   if (loading) return <h2 className="text-center">Loading...</h2>;
   if (error) return <h2 className="text-center text-red-500">{error.message}</h2>;
 
@@ -63,20 +82,43 @@ const MyBlogs = () => {
           </form>
         </div>
 
+        {/* Blog Cards */}
         <div className='w-full flex flex-wrap justify-center gap-8 px-4 pb-8 overflow-auto'>
           {data?.blogs?.map((blog, index) => (
             <div
               key={index}
-             
-              className='w-full md:w-[20rem] lg:w-[23rem] h-[13rem] p-6 shadow-lg bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col justify-around'
+              className='w-full md:w-[20rem] lg:w-[23rem] h-auto p-6 shadow-lg bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col justify-around'
             >
-              <h2 className='text-xl text-center font-bold mb-2'>{blog.title}</h2>
+              <h2 className='text-xl text-center font-bold mb-2'>{blog.title.slice(0, 30)}...</h2>
               <p className='text-sm text-gray-700 font-bold'>{blog.content.slice(0, 150)}...</p>
-              <button className='px-4 mt-5 border rounded-md disabled:opacity-50 hover:bg-gray-200 ease-in-out duration-500' onClick={()=>navigate(`/blog/${blog._id}`)}>Read More</button>
+
+              <div className='flex justify-between mt-5'>
+                <button
+                  onClick={() => navigate(`/blog/${blog._id}`)}
+                  className='px-3 py-1 border rounded-md hover:bg-gray-100 duration-200'
+                >
+                  Read More
+                </button>
+
+                <button
+                  onClick={() => navigate(`/edit-blog/${blog._id}`)}
+                  className='px-3 py-1 border rounded-md text-blue-600 hover:bg-blue-100 duration-200'
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  className='px-3 py-1 border rounded-md text-red-600 hover:bg-red-100 duration-200'
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
+        {/* Pagination */}
         <div className='flex justify-center items-center gap-4 pb-8'>
           <button
             disabled={page === 1}

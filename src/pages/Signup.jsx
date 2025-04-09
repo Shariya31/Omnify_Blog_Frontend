@@ -102,7 +102,7 @@ const Signup = () => {
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+                        className="px-4 py-2 border rounded-md disabled:opacity-50 hover:bg-gray-200"
                         disabled={loading}
                     >
                         {loading ? "Registering..." : "Register"}
